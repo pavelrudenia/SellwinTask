@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block title%}
+<title>Регистрация</title>
+{% endblock %}
+{% block body  %}
+{{ super() }}
+{% for cat, msg in get_flashed_messages(True) %}
+<div class="flash {{cat}}">{{msg}}</div>
+{% endfor %}
+<style>
+
+* {
+    margin:0;
+
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.outer {
+    display: table;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+.inner {
+    text-align: center;
+    width: auto;
+    padding: 0 15px;
+}
+
+#range1 {
+    background: url("img/vertical_cloth.png") repeat left top;
+    height: 100%;
+    min-height: 400px;
+}
+
+
+#range1 .login-wr {
+    position: relative;
+    margin: 0 auto;
+    background: #ecf0f1;
+    max-width: 350px;
+    border-radius: 5px;
+    border-top: 4px solid #e74c3c;
+    box-shadow: 3px 3px 10px #333;
+    padding: 15px;
+}
+
+#range1 h2 {
+    text-align: center;
+    font-weight: 200;
+    font-size: 2em;
+    margin-top: 10px;
+    color: #34495e;
+}
+
+#range1 .form {
+    padding-top: 20px;
+    text-align: center;
+}
+
+#range1 input[type="text"],
+#range1 input[type="password"],
+#range1 button {
+    width: 80%;
+    margin-bottom: 25px;
+    height: 40px;
+    border-radius: 5px;
+    outline: 0;
+    -moz-outline-style: none;
+}
+
+#range1 input[type="text";placeholder="test";],
+#range1 input[type="password"] {
+    border: 1px solid #bbb;
+    padding: 0 0 0 10px;
+    font-size: 14px;
+    placeholder="test";
+}
+
+#range1 a {
+    text-align: center;
+    font-size: 12px;
+    color: #3498db;
+}
+
+#range1 button {
+    background: #e74c3c;
+    border:none;
+    color: white;
+    font-size: 18px;
+    font-weight: 200;
+    cursor: pointer;
+    transition: box-shadow .4s ease;
+}
+[type="submit"] {
+  color: #ffffff;
+  font-size: 16px;
+  border: 1px solid #e5e5e5;
+  padding: 10px 80px;
+  display: inline-block;
+  background-color: #e74c3c;
+  font-weight: 600;
+  cursor: pointer;
+}
+div.content {
+	margin-left: 10px;
+}
+</style>
+<div class="content">
+<div id="range1">
+
+<div class="outer">
+  <div class="middle">
+    <div class="inner">
+
+        <div class="login-wr">
+          <h2>Регистрация</h2>
+
+          <div class="form">
+<form action="/register" method="post" class="form-contact">
+     {{form.hidden_tag()}}
+
+{% for field in form if field.name not in ['csrf_token', 'submit'] -%}
+	<p>{{ field.label() }}
+	{% if field.errors %}
+		{{ field(class="invalid") }}
+	<label class="invalid-feedback">
+		{% for e in field.errors %}
+		{{ e }}
+		{% endfor %}
+	</label>
+	{% else %}
+		{{ field() }}
+	{% endif %}
+{% endfor %}
+
+<p>{{ form.submit() }}
+
+</form>
+			  </div>
+
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+{% endblock %}

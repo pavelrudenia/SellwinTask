@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title%}
+<title>Просмотр информации о карте</title>
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+<div class="container" >
+<h1 align="center">Карта:{{card_series}}{{card_number}}</h1>
+
+    <div class="alert alert-info">
+<p >Дата создания: {{data_card_create[:19]}}</p>
+<p >Действительна до: {{data_card_end}}</p>
+<p >Последнее использование: {{data_card_last_use}}</p>
+<p >Cумма покупок: {{total_sum}}</p>
+<p >Cтатус карты: {{card_status}}</p>
+<p >Cкидка по карте: {{current_discount |safe}}</p>
+<p >Владелец {{owner}}</p>
+</div>
+
+       <a href="/post/{{url}}/delete" class="btn btn-danger">Удалить</a>
+</div>
+
+
+{% endblock%}
