@@ -15,5 +15,5 @@ class RegisterForm(FlaskForm):
     email = StringField("Email: ", validators=[Email("Некорректный email")])
     psw = PasswordField("Пароль: ", validators=[DataRequired(),
                                                 Length(min=4, max=20, message="Пароль должен быть от 4 до 20 символов")])
-    psw2 = PasswordField("Повторите: ", validators=[DataRequired(), EqualTo('psw', message="Пароли не совпадают")])
+    psw2 = PasswordField("Повтор: ", validators=[DataRequired(), EqualTo('psw', message="Пароли не совпадают")])
     submit = SubmitField("Регистрация")

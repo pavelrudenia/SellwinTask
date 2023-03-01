@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title%}
+Оформление заказа
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+<div class="container" >
+<h1 align="center">Оформление заказа</h1>
+
+<div class="alert alert-info">
+    <form method="post"></form>
+    <h1 >{{name_prod}}</h1>
+    <p>Цена за штуку {{price}}</p>
+    <p>Количество заказа {{count}}</p>
+    <p>Цена без скидки пользователя : {{count * price}}</p>
+    <p>Cкидка по карте : {{current_discount}}</p>
+    <p>Итоговая цена со скидкой : {{count * price -(count * price *current_discount/100 ) }}</p>
+    <p>Номер скидочной карты : {{card_number }}</p>
+     <input type="submit" class="btn btn-success" value="Оформить">
+    </form>
+</div>
+</div>
+
+
+{% endblock%}

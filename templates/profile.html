@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-<title> Профиль&#129313 </title>
+Профиль
 {% endblock %}
 
 {% block body %}
@@ -24,27 +24,93 @@
 		<p><a href="{{url_for('logout')}}">Выйти из профиля</a>
 	</td></tr>
 </table>
-	<h1>Карты пользователя</h1>
-	{% if card != [] %}
+	<h1>Актианые карты пользователя</h1>
+	{% if card != False %}
 	{% for c in card %}
 <li>
-<b>Номер и серия карты</b><a  name ="{{c.card_series}}" class="title" href="{{url_for ('ShowPost',alias=c.card_number)}}">{{c.card_series}}{{ c.card_number }}</a>
-<!--<p >{{ c.data_card_create }}</p>-->
-<!--<p>{{ c.data_card_end }}</p>-->
-<!--<p >{{ c.data_card_last_use }}</p>-->
-<!--<p >{{ c.total_sum }}</p>-->
-<!--<p >{{ c.card_status }}</p>-->
-<!--<p >{{ c.current_discount }}</p>-->
-<!--<p>{{ c.owner }}</p>-->
-
-<a name="{{c.card_number}}" href="/admin/<{{c.card_number}}>/delete" class="btn btn-danger">В корзину</a>
-	<a name="{{c.card_number}}" href="/admin/<{{c.card_number}}>/delete" class="btn btn-danger">Деактивировать</a>
+<b>Номер и серия карты</b><a  name ="{{c.card_series}}" class="title" href="{{url_for ('ShowCard',alias=c.card_number)}}">{{c.card_series}}{{ c.card_number }}</a>
+<a name="{{c.card_number}}" class="btn btn-danger" href="{{url_for ('ToBasket',number=c.card_number,series=c.card_series)}}">В корзину</a>
+	<a name="{{c.card_number}}" href="{{url_for ('CardDeactivate',number=c.card_number,series=c.card_series)}}" class="btn btn-danger">Деактивировать</a>
 		<hr>
 </li>
 {% endfor %}
 	{%else%}
-	<h1>Карт нету</h1>
+	<h5>Карт нету</h5>
+	{% endif %}
+
+	<h1>Неактианые карты пользователя</h1>
+	{% if card_unactive != False %}
+	{% for u in card_unactive %}
+<li>
+<b>Номер и серия карты</b><a  name ="{{u.card_series}}" class="title" href="{{url_for ('ShowCard',alias=u.card_number)}}">{{u.card_series}}{{ u.card_number }}</a>
+<a name="{{u.card_number}}" class="btn btn-danger" href="{{url_for ('ToBasket',number=u.card_number,series=u.card_series)}}">В корзину</a>
+	<a name="{{u.card_number}}" href="{{url_for ('CardАctivate',number=u.card_number,series=u.card_series)}}" class="btn btn-danger">Активировать</a>
+		<hr>
+</li>
+{% endfor %}
+	{%else%}
+	<h5>Карт нету</h5>
 	{% endif %}
 
 
+<h1>Просроченные карты пользователя</h1>
+	{% if card_overdue != False %}
+	{% for o in card_overdue %}
+<li>
+<b>Номер и серия карты</b><a  name ="{{o.card_series}}" class="title" href="{{url_for ('ShowCard',alias=o.card_number)}}">{{o.card_series}}{{ o.card_number }}</a>
+		<hr>
+</li>
+{% endfor %}
+	{%else%}
+	<h5>Карт нету</h5>
+	{% endif %}
+
+
+
+
+
+<h1>Корзина</h1>
+	{% if card_delete != False %}
+	{% for d in card_delete %}
+<li>
+<b>Номер и серия карты</b><a  name ="{{d.card_series}}" class="title" href="{{url_for ('ShowCard',alias=d.card_number)}}">{{d.card_series}}{{ d.card_number }}</a>
+<a name="{{d.card_number}}" class="btn btn-danger" href="{{url_for ('DeleteCard',number=d.card_number,series=d.card_series)}}">Удалить</a>
+<a name="{{d.card_number}}" class="btn btn-danger" href="{{url_for ('CardАctivate',number=d.card_number,series=d.card_series)}}">Активировать</a>
+		<hr>
+</li>
+{% endfor %}
+	{%else%}
+	<h5>Карт нету</h5>
+	{% endif %}
+<hr>
+<h1>Поиск по картам</h1>
+<form name="myForm" method="POST">
+	 <input type="text" name="card_series" id="card_series" minlength="2" class="form-control" maxlength="2" placeholder="Введите серию карты" required></br>
+          <label>Введите номер карты</label><input  name="card_number" id="card_number"   type="number" min="00000000" max="99999999" placeholder="xxxx xxxx" required></br>
+        <label>Выберите категорию:</label>
+     <select name="language" id="months" required >
+          <option selected>Активная</option>
+          <option>Неактивная</option>
+          <option>Просроченная</option>
+		  <option>В корзине</option>
+         </select>
+         <br>
+        <label id="sel">Вы выбрали:</label>
+        <a id="card_status" name="card_status">Aктивная</a><br>
+        <label id="d">Окончание действия карты</label><input id="end_card" name="end_card" type="datetime-local" min="2024-01-01" required value="2024-01-01">
+        <input type="number" name="current_discount" id="current_discount" maxlength="5"  class="form-control" placeholder="скидка по карте" required></br>
+        <input type="submit" class="btn btn-success" value="Отправить">
+</form>
+<script>
+var languagesSelect = myForm.language;
+
+function changeOption(){
+
+    var selection = document.getElementById("card_status");
+    var selectedOption = languagesSelect.options[languagesSelect.selectedIndex];
+    selection.textContent =  selectedOption.text;
+}
+
+languagesSelect.addEventListener("change", changeOption);
+</script>
 {% endblock %}

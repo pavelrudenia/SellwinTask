@@ -1,0 +1,75 @@
+{% extends 'base.html'%}
+
+{% block title%}
+Оформление заказа
+{% endblock%}
+
+
+{% block body%}
+{% for cat, msg in get_flashed_messages(True) %}
+<div class="flash {{cat}}">{{msg}}</div>
+
+{%if product != False and card != False%}
+<form name="myForm" method="post">
+    <p>Выберите продукт:</p>
+    <select name="language"  required >
+         {% for p in product%}
+          <option selected>{{p.product_name}} | Цена за шт.{{p.price}}</option>
+           {%endfor%}
+         </select>
+
+     <br>
+        <label id="sel">Вы выбрали:</label>
+        <a id="card_status" name="card_status"></a><br>
+        <p>Выберите карту для оплаты:</p>
+      <select name="language2"  required >
+         {% for c in card%}
+          <option selected>{{c.card_number}}</option>
+           {%endfor%}
+         </select>
+
+     <br>
+        <label id="sel2">Вы выбрали:</label>
+        <a id="card_status2" name="card_status2"></a><br>
+
+
+
+
+<label >Введите количество </label><input  type="number" name="count" id='count' min="1" max="10"  required><br>
+<hr>
+
+<input type="submit" class="btn btn-success" align="center" value="Перейти к оформлению">
+</form>
+
+{%else%}
+    <h1>Заказ не возможен,нету продуктов или карт,проверьте профиль</h1>
+{%endif%}
+
+{% endfor %}
+
+<script>
+var languagesSelect = myForm.language;
+
+function changeOption(){
+
+    var selection = document.getElementById("card_status");
+    var selectedOption = languagesSelect.options[languagesSelect.selectedIndex];
+    selection.textContent =  selectedOption.text;
+}
+
+languagesSelect.addEventListener("change", changeOption);
+</script>
+
+<script>
+var languagesSelect2= myForm.language2;
+
+function changeOption2(){
+
+    var selection2 = document.getElementById("card_status2");
+    var selectedOption2 = languagesSelect2.options[languagesSelect2.selectedIndex];
+    selection2.textContent =  selectedOption2.text;
+}
+
+languagesSelect2.addEventListener("change", changeOption2);
+</script>
+{% endblock%}

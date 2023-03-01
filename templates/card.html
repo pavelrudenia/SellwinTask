@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title%}
-<title>Просмотр информации о карте</title>
+Просмотр информации о карте
 {% endblock %}
 
 {% block body %}
@@ -9,7 +9,7 @@
 <div class="container" >
 <h1 align="center">Карта:{{card_series}}{{card_number}}</h1>
 
-    <div class="alert alert-info">
+<div class="alert alert-info">
 <p >Дата создания: {{data_card_create[:19]}}</p>
 <p >Действительна до: {{data_card_end}}</p>
 <p >Последнее использование: {{data_card_last_use}}</p>
@@ -18,8 +18,34 @@
 <p >Cкидка по карте: {{current_discount |safe}}</p>
 <p >Владелец {{owner}}</p>
 </div>
+</div>
 
-       <a href="/post/{{url}}/delete" class="btn btn-danger">Удалить</a>
+<h1 align="center">Cписок заказов по карте</h1>
+{%if orders != (False,False)%}
+{% for o in orders %}
+<div class="container" >
+<h2 align="center">Номер заказа:{{o.id}}</h2>
+
+<div class="alert alert-info">
+<p >Дата заказа: {{o.date}}</p>
+<p >Заказанный продукт : {{o.product}}</p>
+<p >Количества заказанного товара : {{o.count}}</p>
+<p >Цена без скидки: {{o.amount}}</p>
+<p >Cкидка по карте(%): {{o.discount_amount}}</p>
+<p >Итоговая стоимость: {{o.discount }}</p>
+</div>
+</div>
+{%endfor%}
+{%else%}
+<h5>Покупки по данной карте отсутствуют</h5>
+{% endif %}
+<div class="container">
+<h2 align="center">Cортировка по дате заказа</h2>
+<form method="post">
+    <label id="d">Карта с</label><input id="start_card" name="start_card" type="datetime-local" min="2023-01-01" required>
+    <label id="d2">Карта по</label><input id="end_card" name="end_card" type="datetime-local" min="2023-01-01" required >
+     <input type="submit" class="btn btn-success" value="Отправить">
+</form>
 </div>
 
 

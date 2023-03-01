@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title%}
+Список карт по критериям
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+
+<div class="container" >
+    {% if search.card_number == '' %}
+<h1 align="center">Карта:{{search.card_series}}{{search.card_number}}</h1>
+
+    <div class="alert alert-info">
+<p >Дата создания: {{search.data_card_create}}</p>
+<p >Действительна до: {{search.data_card_end}}</p>
+<p >Последнее использование: {{search.data_card_last_use}}</p>
+<p >Cумма покупок: {{search.total_sum}}</p>
+<p >Cтатус карты: {{search.card_status}}</p>
+<p >Cкидка по карте: {{search.current_discount |safe}}</p>
+<p >Владелец {{search.owner}}</p>
+</div>
+</div>
+
+{% else%}
+Карты нет
+{% endif %}
+{% endblock%}
