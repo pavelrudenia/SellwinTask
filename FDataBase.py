@@ -245,11 +245,11 @@ class FDataBase:
 
         return False
 
-    def getCard(self, alias):
+    def getCard(self, alias,series):
         try:
 
             self.__cur.execute(
-                f"SELECT * FROM Cards WHERE card_number = '{alias}' LIMIT 1")
+                f"SELECT * FROM Cards WHERE card_number = '{alias}' and card_series = '{series}'")
             res = self.__cur.fetchone()
 
             if res:
@@ -349,9 +349,12 @@ class FDataBase:
 
             self.__cur.execute(
                 f"SELECT * FROM Cards WHERE card_number = '{number}'"
-                f"and card_series = '{series}' and data_card_end = '{end_card}' and card_status = '{status}' and current_discount = '{dis}'")
-            res = self.__cur.fetchone()
+                f"and card_series = '{series}' and "
+                f"data_card_end = '{end_card}' and card_status = '{status}' "
+                f"and current_discount = '{dis}'")
 
+            res = self.__cur.fetchone()
+            print(res)
             if res:
                 return res
         except Exception as e:

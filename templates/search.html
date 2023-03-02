@@ -8,8 +8,11 @@
 {{ super() }}
 
 <div class="container" >
-    {% if search.card_number == '' %}
-<h1 align="center">Карта:{{search.card_series}}{{search.card_number}}</h1>
+    {% if search == (False, False) %}
+<h1>Карты нет,проверьте введенные данные</h1>
+
+{% else%}
+    <h1 align="center">Карта:{{search.card_series}}{{search.card_number}}</h1>
 
     <div class="alert alert-info">
 <p >Дата создания: {{search.data_card_create}}</p>
@@ -21,8 +24,5 @@
 <p >Владелец {{search.owner}}</p>
 </div>
 </div>
-
-{% else%}
-Карты нет
 {% endif %}
 {% endblock%}

@@ -14,7 +14,7 @@
     <p>Выберите продукт:</p>
     <select name="language"  required >
          {% for p in product%}
-          <option selected>{{p.product_name}} | Цена за шт.{{p.price}}</option>
+          <option selected>{{p.product_name}} | Цена за шт.{{p.discounted_price}}</option>
            {%endfor%}
          </select>
 

@@ -96,13 +96,13 @@ def addProduct():
 @login_required
 def addСard():
     if request.method == "POST":
-        name = request.form.get('card_series')
-        price = request.form.get('card_number')
-        discounted_price = request.form.get('card_status')
-        dis = request.form.get('current_discount')
+        # name = request.form.get('card_series')
+        # price = request.form.get('card_number')
+        # discounted_price = request.form.get('card_status')
+        # dis = request.form.get('current_discount')
         author = current_user.getName()
         if len(request.form['card_series']) > 1:
-            res = dbase.addСard(request.form['card_series'],
+            res = dbase.addСard(request.form['card_series'].upper(),
                                 request.form['card_number'],
                                 request.form['language'],
                                 request.form['current_discount'],
@@ -122,7 +122,7 @@ def addСard():
 @login_required
 def addRandomСard():
     if request.method == "POST":
-        card_series = request.form.get('card_series')
+        card_series = request.form.get('card_series').upper()
         count = request.form.get('count')
         card_status = request.form.get('language')
         current_discount = request.form.get('current_discount')
@@ -278,6 +278,7 @@ def profile():
         end_card = request.form.get('end_card')
         if number is not None:
             search = dbase.searchCard(number, series, status, dis, end_card)
+            print(search)
 
             if not search:
                 flash("Ошибка поиска карты", category='error')
@@ -328,10 +329,10 @@ def profile():
                            card_overdue=card_overdue, card_delete=card_delete)
 
 
-@app.route("/card/<alias>", methods=["POST", "GET"])
+@app.route("/card/<series>/<alias>", methods=["POST", "GET"])
 @login_required
-def ShowCard(alias):
-    res = dbase.getCard(alias)
+def ShowCard(alias,series):
+    res = dbase.getCard(alias,series)
     if not res["owner"]:
         abort(404)
     orders = dbase.getOrders(alias)
