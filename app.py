@@ -79,15 +79,26 @@ def index():
 @login_required
 def addProduct():
     if request.method == "POST":
-        name = request.form.get('name')
-        price = request.form.get('price')
-        discounted_price = request.form.get('discounted_price')
-        if price and name and discounted_price is not None:
+        name = request.args.get('name')
+        price = request.args.get('price')
+        discounted_price = request.args.get('discounted_price')
+
+        if name and price and discounted_price  is not None:
             res = dbase.addProduct(name, price, discounted_price)
             if not res:
-                flash("Ошибка добавления продукта", category='error')
+                flash("Ошибка добавления статьи", category='error')
             else:
-                flash('Продукт добавлен успешно', category="success")
+                flash('Cтатья добавлена успешно', category="success")
+        else:
+            name = request.form.get('name')
+            price = request.form.get('price')
+            discounted_price = request.form.get('discounted_price')
+            if price and name and discounted_price is not None:
+                res = dbase.addProduct(name, price, discounted_price)
+                if not res:
+                    flash("Ошибка добавления статьи", category='error')
+                else:
+                    flash('Cтатья добавлена успешно', category="success")
 
     return render_template("add.html")
 
