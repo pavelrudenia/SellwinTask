@@ -331,25 +331,41 @@ def logout():
     flash("Вы вышли из аккаунта", "success")
     return redirect(url_for('login'))
 
-
+"""http://127.0.0.1:5000/profile?csrf_token=ImVjZDExOTgzOTE5NzQ5M2YzOWNlZjI4Mjg3MGVmY2NiNzA0MTZhNzIi.YnDP1Q.2zuvpB4hCJYiHd3jCocbxOa-vKk&card_series=AA&card_number=77777777&language=%D0%90%D0%BA%D1%82%D0%B8%D0%B2%D0%BD%D0%B0%D1%8F&end_card=2023-03-19T22%3A40&current_discount=11&author=pavel"""
 @app.route('/profile', methods=["POST", "GET"])
 @login_required
 def profile():
     if request.method == "POST":
-        number = request.form.get('card_number')
-        series = request.form.get('card_series')
-        status = request.form.get('language')
-        dis = request.form.get('current_discount')
-        end_card = request.form.get('end_card')
-        if number is not None:
-            search = dbase.searchCard(number, series, status, dis, end_card)
-            print(search)
+        number = request.args.get('card_number')
+        series = request.args.get('card_series')
+        status = request.args.get('language')
+        dis = request.args.get('current_discount')
+        end_card = request.args.get('end_card')
+        if number and series and status and dis and end_card is not None:
+            if number is not None:
+                search = dbase.searchCard(number, series, status, dis, end_card)
+                print(search)
 
-            if not search:
-                flash("Ошибка поиска карты", category='error')
-            else:
-                flash('Карта найдена', category="success")
-                return render_template('search.html', search=search)
+                if not search:
+                    flash("Ошибка поиска карты", category='error')
+                else:
+                    flash('Карта найдена', category="success")
+                    return render_template('search.html', search=search)
+        else:
+            number = request.form.get('card_number')
+            series = request.form.get('card_series')
+            status = request.form.get('language')
+            dis = request.form.get('current_discount')
+            end_card = request.form.get('end_card')
+            if number is not None:
+                search = dbase.searchCard(number, series, status, dis, end_card)
+                print(search)
+
+                if not search:
+                    flash("Ошибка поиска карты", category='error')
+                else:
+                    flash('Карта найдена', category="success")
+                    return render_template('search.html', search=search)
     if db:
         try:
             card = []
