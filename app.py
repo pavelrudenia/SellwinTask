@@ -139,28 +139,49 @@ def addСard():
     return render_template("add_card.html")
 
 
+
+"""http://127.0.0.1:5000/generate_card?csrf_token=ImVjZDExOTgzOTE5NzQ5M2YzOWNlZjI4Mjg3MGVmY2NiNzA0MTZhNzIi.YnDP1Q.2zuvpB4hCJYiHd3jCocbxOa-vKk&language=%D0%90%D0%BA%D1%82%D0%B8%D0%B2%D0%BD%D0%B0%D1%8F&card_series=xx&count=1&end_card=2023-03-04T21%3A51&current_discount=64&author=pavel&card_status=Активная"""
 @app.route("/generate_card", methods=['POST', 'GET'])
 @login_required
 def addRandomСard():
     if request.method == "POST":
-        card_series = request.form.get('card_series').upper()
-        count = request.form.get('count')
-        card_status = request.form.get('language')
-        current_discount = request.form.get('current_discount')
-        end_card = request.form.get('end_card')
-        author = current_user.getName()
+        author = request.args.get('author')
+        card_series = request.args.get('card_series')
+        card_status = request.args.get('language')
+        current_discount = request.args.get('current_discount')
+        end_card = request.args.get('end_card')
+        count = request.args.get('count')
+        if card_series and card_status and count and current_discount and end_card is not None:
+            while int(count) != 0:
+                count = int(count) - 1
+                card_number = random.randint(10000000, 99999999)
+                res = dbase.addСard(card_series, card_number, card_status,
+                                    current_discount, end_card, author)
+                if not res:
+                    flash("Ошибка создания карты", category='error')
+                    count = int(count) + 1
+                else:
+                    flash('Карта добавлена успешно', category="success")
+                continue
+        else:
+            card_series = request.form.get('card_series').upper()
+            count = request.form.get('count')
+            card_status = request.form.get('language')
+            current_discount = request.form.get('current_discount')
+            end_card = request.form.get('end_card')
+            author = current_user.getName()
 
-        while int(count) != 0:
-            count = int(count) - 1
-            card_number = random.randint(10000000, 99999999)
-            res = dbase.addСard(card_series, card_number, card_status,
-                                current_discount, end_card, author)
-            if not res:
-                flash("Ошибка создания карты", category='error')
-                count = int(count) + 1
-            else:
-                flash('Карта добавлена успешно', category="success")
-            continue
+            while int(count) != 0:
+                count = int(count) - 1
+                card_number = random.randint(10000000, 99999999)
+                res = dbase.addСard(card_series, card_number, card_status,
+                                    current_discount, end_card, author)
+                if not res:
+                    flash("Ошибка создания карты", category='error')
+                    count = int(count) + 1
+                else:
+                    flash('Карта добавлена успешно', category="success")
+                continue
 
     return render_template("random_generate.html")
 
