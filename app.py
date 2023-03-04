@@ -85,9 +85,9 @@ def addProduct():
         if price and name and discounted_price is not None:
             res = dbase.addProduct(name, price, discounted_price)
             if not res:
-                flash("Ошибка добавления статьи", category='error')
+                flash("Ошибка добавления продукта", category='error')
             else:
-                flash('Cтатья добавлена успешно', category="success")
+                flash('Продукт добавлен успешно', category="success")
 
     return render_template("add.html")
 
