@@ -74,7 +74,7 @@ def before_request():
 def index():
     return render_template("base.html")
 
-
+"""http://127.0.0.1:5000/add_product?csrf_token=ImVjZDExOTgzOTE5NzQ5M2YzOWNlZjI4Mjg3MGVmY2NiNzA0MTZhNzIi.YnDP1Q.2zuvpB4hCJYiHd3jCocbxOa-vKk&name=диван&price=300&discounted_price=279"""
 @app.route("/add_product", methods=['POST', 'GET'])
 @login_required
 def addProduct():
