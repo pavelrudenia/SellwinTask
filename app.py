@@ -103,28 +103,38 @@ def addProduct():
     return render_template("add.html")
 
 
+"""http://127.0.0.1:5000/add_card?csrf_token=ImVjZDExOTgzOTE5NzQ5M2YzOWNlZjI4Mjg3MGVmY2NiNzA0MTZhNzIi.YnDP1Q.2zuvpB4hCJYiHd3jCocbxOa-vKk&card_series=AA&card_number=77777777&language=%D0%90%D0%BA%D1%82%D0%B8%D0%B2%D0%BD%D0%B0%D1%8F&end_card=2023-03-19T22%3A40&current_discount=11&author=pavel"""
 @app.route("/add_card", methods=['POST', 'GET'])
 @login_required
 def addСard():
     if request.method == "POST":
-        # name = request.form.get('card_series')
-        # price = request.form.get('card_number')
-        # discounted_price = request.form.get('card_status')
-        # dis = request.form.get('current_discount')
-        author = current_user.getName()
-        if len(request.form['card_series']) > 1:
-            res = dbase.addСard(request.form['card_series'].upper(),
-                                request.form['card_number'],
-                                request.form['language'],
-                                request.form['current_discount'],
-                                request.form['end_card'], author)
+        author = request.args.get('author')
+        card_series = request.args.get('card_series')
+        card_number = request.args.get('card_number')
+        language = request.args.get('language')
+        current_discount = request.args.get('current_discount')
+        end_card = request.args.get('end_card')
+        if card_series and card_number and language and current_discount and end_card is not None:
+            res = dbase.addСard(card_series,card_number,language,current_discount,end_card,author)
             if not res:
                 flash("Ошибка добавления карты,данный номер уже занят",
                       category='error')
             else:
                 flash('Карта добавлена успешно', category="success")
         else:
-            flash("Данные введены не корректно", category='error')
+            if len(request.form['card_series']) > 1:
+                res = dbase.addСard(request.form['card_series'].upper(),
+                                    request.form['card_number'],
+                                    request.form['language'],
+                                    request.form['current_discount'],
+                                    request.form['end_card'], author)
+                if not res:
+                    flash("Ошибка добавления карты,данный номер уже занят",
+                          category='error')
+                else:
+                    flash('Карта добавлена успешно', category="success")
+            else:
+                flash("Данные введены не корректно", category='error')
 
     return render_template("add_card.html")
 
