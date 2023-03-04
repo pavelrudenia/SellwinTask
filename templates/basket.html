@@ -24,7 +24,7 @@
         <p>Выберите карту для оплаты:</p>
       <select name="language2"  required >
          {% for c in card%}
-          <option selected>{{c.card_number}}</option>
+          <option selected>{{c.card_series}}|{{c.card_number}}</option>
            {%endfor%}
          </select>
 

@@ -72,10 +72,10 @@ class FDataBase:
 
         return False
 
-    def getCardDiscount(self, card_number):
+    def getCardDiscount(self, card_number,series):
         try:
             self.__cur.execute(
-                f"SELECT current_discount FROM cards where card_number = '{card_number}' ")
+                f"SELECT current_discount FROM cards where card_number = '{card_number}' and card_series = '{series}' ")
             res = self.__cur.fetchone()
 
             if not res:
@@ -130,10 +130,10 @@ class FDataBase:
         return True
 
     def CreateOrder(self, count, name_prod, price, current_discount, discount,
-                    card_number):
+                    card_number,card_series):
         try:
             self.__cur.execute(
-                f"SELECT total_sum FROM cards where card_number = '{card_number}';")
+                f"SELECT total_sum FROM cards where card_number = '{card_number}' and card_series Like '{card_series}';")
             total_sum_last = self.__cur.fetchone()
             total_sum = float(discount) + float(total_sum_last['total_sum'])
             data = datetime.datetime.now()
